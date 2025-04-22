@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Health Check{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/sessions.css' %}">
+  {# Add global css/js here: #}
+  <link rel="stylesheet" href="{% static 'css/global.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{% static 'js/global.js' %}" defer></script>
+</head>
+<body>
+  <header>
+    <!-- your nav bar -->
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <!-- your footer -->
+  </footer>
+
+  {# any bottom‑of‑page scripts: #}
+  <script src="{% static 'js/sessions.js' %}"></script>
+</body>
+</html>
