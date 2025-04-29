@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Engineer Sign</title>
+  <style>
+   
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #e3f2fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+    }
+
+   
+    .login {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #fd543e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login:hover {
+      background: #ff5959;
+    }
+
+   
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 2rem;
+      width: 360px;
+      text-align: center;
+    }
+
+    .card h1 {
+      margin: 0 0 1.5rem;
+      color: #9aa3f5;
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+
+  
+    .card_input[type="text"],
+    .card_input[type="password"] {
+      width: 90%;
+      padding: 0.75rem;
+      margin: 0.75rem auto;
+      display: block;
+      border: 1px solid #7875d8;
+      border-radius: 4px;
+      background: transparent;
+      font-size: 1rem;
+      color: #000;
+      outline: none;
+    }
+    .card_input::placeholder {
+      color: #666;
+    }
+    .card_input:focus {
+      box-shadow: none;
+    }
+
+    
+    .button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      background: #fd543e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .button:hover {
+      background: #ff5959;
+    }
+  </style>
+</head>
+<body>
+
+
+  <button class="login">Login</button>
+
+  
+  <div class="card">
+    <h1>Welcome</h1>
+
+    <input class="card_input" type="text" placeholder="Email"/>
+    <input class="card_input" type="text" placeholder="Username"/>
+    <input class="card_input" type="password" placeholder="Password"/>
+    <input class="card_input" type="password" placeholder="Confirm Password"/>
+
+    <button class="button">Create Account as <strong>Engineer</strong></button>
+  </div>
+
+</body>
+</html>
+
+
+
