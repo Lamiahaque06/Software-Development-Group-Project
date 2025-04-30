@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ role_label }} – Start{% endblock %}
+{% block content %}
+  <div class="max-w-sm mx-auto py-12 text-center">
+    <h2 class="text-2xl font-semibold mb-6">
+      {{ role_label }}
+    </h2>
+    <div class="space-x-4">
+      <a
+        href="{% url 'authentication:login' role=role %}"
+        class="px-6 py-3 bg-green-500 text-white rounded
+               hover:bg-green-600 transition"
+      >
+        Login
+      </a>
+      <a
+        href="{% url 'authentication:signup' role=role %}"
+        class="px-6 py-3 bg-blue-500 text-white rounded
+               hover:bg-blue-600 transition"
+      >
+        Sign Up
+      </a>
+    </div>
+  </div>
+{% endblock %}

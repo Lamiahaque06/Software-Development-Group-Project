@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+  <div class="max-w-md mx-auto py-12 text-center">
+    <h1 class="text-3xl font-bold mb-8">
+      Welcome to Sky Health Care Survey
+    </h1>
+    <div class="grid grid-cols-2 gap-4">
+      {% for slug,label in roles %}
+        <a
+          href="{% url 'authentication:choose_auth' role=slug %}"
+          class="block px-6 py-3 bg-indigo-600 text-white rounded
+                 hover:bg-indigo-700 transition"
+        >
+          {{ label }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+

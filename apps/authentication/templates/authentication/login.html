@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Login – {{ role_label }}{% endblock %}
+{% block content %}
+  <div class="max-w-md mx-auto py-12">
+    <h2 class="text-2xl font-semibold mb-6">
+      Login as {{ role_label }}
+    </h2>
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div>
+          {{ field.label_tag }}
+          {{ field }}
+          <div class="text-red-600 text-sm">
+            {{ field.errors|join:", " }}
+          </div>
+        </div>
+      {% endfor %}
+      <div class="text-right">
+        <button
+          type="submit"
+          class="px-6 py-2 bg-blue-600 text-white rounded
+                 hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
+      </div>
+    </form>
+    <p class="mt-4 text-sm">
+      Don't have an account?
+      <a
+        href="{% url 'authentication:signup' role=role %}"
+        class="text-blue-600 hover:underline"
+      >
+        Sign up here
+      </a>.
+    </p>
+  </div>
+{% endblock %}
