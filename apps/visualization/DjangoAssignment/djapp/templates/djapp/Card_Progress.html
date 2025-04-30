@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Card Progress</title>
+  <style>
+    :root {
+      --header-bg:    #8E8EDD;
+      --sidebar-bg:   #E1E1F7;
+      --link-color:   #5D5DA7;
+      --link-hover:   rgba(63,78,216,0.1);
+      --active-color: #3F4ED8;
+      --select-bg:    #80B3FF;
+      --select-hover: #A3CFFF;
+      --agree:        #66D46E;
+      --neutral:      #F2CB3C;
+      --disagree:     #E34426;
+      --border-dark:  #333;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: var(--header-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 10;
+    }
+    .header .logo {
+      height: 32px;
+    }
+    .header .username {
+      color: var(--active-color);
+    }
+    .container {
+      display: flex;
+      padding-top: 60px;
+      width: 100%;
+    }
+    .sidebar {
+      width: 200px;
+      background: var(--sidebar-bg);
+      overflow-y: auto;
+    }
+    .sidebar_style {
+      display: block;
+      padding: 16px 24px;
+      color: var(--link-color);
+      text-decoration: none;
+      border-bottom: 1px solid #C3C3E5;
+      transition: background .2s, color .2s;
+    }
+    .sidebar_style:hover {
+      background: var(--link-hover);
+      color: var(--active-color);
+    }
+    .sidebar_style.active {
+      font-weight: bold;
+      color: var(--active-color);
+      border-bottom: 3px solid var(--active-color);
+    }
+    .page {
+      flex: 1;
+      background: #fff;
+      overflow-y: auto;
+      padding: 24px 40px;
+      position: relative;
+    }
+    .page_h1 {
+      color: var(--active-color);
+      font-size: 3em;
+      margin-bottom: 24px;
+    }
+    .dropdowns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .dropdowns select {
+      min-width: 160px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 6px;
+      appearance: none;
+      background: var(--select-bg)
+        url("data:image/svg+xml;charset=UTF-8,%3Csvg width='24' height='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='6,9 12,15 18,9' fill='%23000'/%3E%3C/svg%3E")
+        no-repeat right 12px center;
+      background-size: 12px;
+      font-size: .95em;
+      color: #000;
+      transition: background .2s;
+    }
+    .dropdowns select:hover {
+      background: var(--select-hover);
+    }
+    .summary {
+      margin-bottom: 60px;
+    }
+    .summary .question {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .progress_container {
+      display: flex;
+      height: 32px;
+      border: 2px solid var(--border-dark);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress_container .agree {
+      background: var(--agree);
+    }
+    .progress_container .neutral {
+      background: var(--neutral);
+    }
+    .progress_container .disagree {
+      background: var(--disagree);
+    }
+    .summary_labels {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0 24px;
+      font-size: .95em;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+    <body>
+        <!-- Header -->
+        <header class="header">
+          <img src="{% static 'djapp/sky_logo.png' %}" class="logo" alt="Sky logo"/>
+          <div class="username">{{ user.username }}</div>
+        </header>
+      
+        <div class="container">
+            <nav class="sidebar">
+                <a href = "#" class = sidebar_style> Profile Settings</a>
+                <a href="{% url 'dept_summary' %}" class="sidebar_style {% if request.resolver_match.url_name == 'dept_summary' %}active{% endif %}">
+                  Department Summary
+                </a>
+                <a href="{% url 'card_progress' %}" class="sidebar_style {% if request.resolver_match.url_name == 'card_progress' %}active{% endif %}">
+                  Card Progress
+                </a>
+                <a href="{% url 'logout' %}" class="sidebar_style">
+                  Logout
+                </a>
+              </nav>
+              
+      
+          <main class="page">
+            <h1 class="page_h1">Card Progress</h1>
+        
+            <div class="dropdowns">
+              <!-- all questions in dropdown -->
+              <select onchange="location.href='?card='+this.value">
+                <option value="">Select card</option>
+                {% for q in questions %}
+                  <option value="{{ q.id }}"
+                    {% if selected_card and q.id == selected_card.id %}selected{% endif %}>
+                    {{ q.text }}
+                  </option>
+                {% endfor %}
+              </select>
+        
+              <!-- date range: only “(current)” as text -->
+              <select>
+                <option>Select date range (current)</option>
+              </select>
+        
+              {% if role != 'engineer' %}
+                <select onchange="location.href='?card={{ selected_card.id }}&team='+this.value">
+                  <option value="">Select team</option>
+                  {% for t in teams %}
+                    <option value="{{ t.id }}">{{ t.name }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
+        
+              {% if role in 'team_leader dept_leader senior_manager' %}
+                <select onchange="location.href='?card={{ selected_card.id }}&dept='+this.value">
+                  <option value="">Select department</option>
+                  {% for d in depts %}
+                    <option value="{{ d.id }}">{{ d.name }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
+            </div>
+        
+            {% if selected_card %}
+              <div class="summary">
+                <div class="question">{{ selected_card.text }}</div>
+                <div class="progress_container">
+                  <div class="agree"   style="width:{{ agree_pct }}%"></div>
+                  <div class="neutral" style="width:{{ neutral_pct }}%"></div>
+                  <div class="disagree"style="width:{{ disagree_pct }}%"></div>
+                </div>
+                <div class="summary_labels">
+                  <div class="label-left">%{{ agree_pct }} agree</div>
+                  <div class="label-middle">%{{ neutral_pct }} neutral</div>
+                  <div class="label-right">%{{ disagree_pct }} disagree</div>
+                </div>
+              </div>
+            {% else %}
+              <p>No question selected.</p>
+            {% endif %}
+        
+            <!-- no back button here; sidebar link already handles navigation -->
+        
+          </main>
+        
+      </body>
+  
+      <script>
+      const sidebarLinks = document.querySelectorAll('.sidebar_style');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          // just toggle the CSS, let the browser follow the href
+          sidebarLinks.forEach(a => a.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+    </script>
+  </html>
