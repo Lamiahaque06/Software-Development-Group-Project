@@ -1,38 +1,31 @@
-{# apps/sessions/templates/sessions/select.html #}
+<!-- templates/sessions/select.html -->
 {% extends "base.html" %}
+{% block title %}Select Team & Session{% endblock %}
 {% block content %}
-<div class="flex flex-col h-full">
-
-  <!-- Header -->
-  <div class="bg-lavender-100 p-4 border-b border-gray-200">
-    <h1 class="text-2xl font-medium text-purple-600">Team Select</h1>
-  </div>
-
-  <!-- Content -->
-  <div class="p-6 flex-1">
-    <p class="text-xl text-purple-500 mb-8">
-      Please select your team. A session will be created for you automatically.
-    </p>
-
-    <form method="post" class="space-y-6">
-      {% csrf_token %}
-      <div>
-        {{ form.team }}
-        {{ form.team.errors }}
+<div class="max-w-md mx-auto py-12">
+  <h2 class="text-2xl font-semibold mb-6 text-center">
+    Select Your Team
+  </h2>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div>
+      {{ form.team.label_tag }}
+      {{ form.team }}
+      {% if form.team.errors %}
+      <div class="text-red-600 text-sm">
+        {{ form.team.errors|join:", " }}
       </div>
-
-      <div class="flex justify-end space-x-4 mt-6">
-        <a href=""
-           class="px-6 py-2 bg-purple-400 text-white rounded-md hover:bg-purple-500 transition">
-          Back
-        </a>
-        <button type="submit"
-           class="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition">
-          Proceed
-        </button>
-      </div>
-    </form>
-  </div>
-
+      {% endif %}
+    </div>
+    <div class="text-right">
+      <button
+        type="submit"
+        class="px-6 py-2 bg-blue-600 text-white rounded
+               hover:bg-blue-700 transition"
+      >
+        Start Session
+      </button>
+    </div>
+  </form>
 </div>
 {% endblock %}
