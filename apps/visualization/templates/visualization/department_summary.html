@@ -1,0 +1,30 @@
+<!-- templates/visualization/department_summary.html -->
+{% extends "base.html" %}
+{% block title %}Department Summary{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto py-8">
+  <h2 class="text-2xl font-semibold mb-4">
+    Department Summary — {{ department.department_name }}
+  </h2>
+  <table class="w-full table-auto border-collapse mb-6">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border px-4 py-2">Card</th>
+        <th class="border px-4 py-2">Excellent</th>
+        <th class="border px-4 py-2">Average</th>
+        <th class="border px-4 py-2">Bad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for title, counts in summary.items %}
+      <tr>
+        <td class="border px-4 py-2">{{ title }}</td>
+        <td class="border px-4 py-2">{{ counts.Green }}</td>
+        <td class="border px-4 py-2">{{ counts.Amber }}</td>
+        <td class="border px-4 py-2">{{ counts.Red }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

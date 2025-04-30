@@ -1,0 +1,28 @@
+<!-- templates/visualization/card_progress.html -->
+{% extends "base.html" %}
+{% block title %}Card Progress{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto py-8">
+  <h2 class="text-2xl font-semibold mb-4">
+    Card Progress — {{ team.team_name }}
+  </h2>
+  <table class="w-full table-auto border-collapse">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border px-4 py-2">Quarter</th>
+        <th class="border px-4 py-2">Avg. Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in progress %}
+      <tr>
+        <td class="border px-4 py-2">Q{{ p.quarter }}</td>
+        <td class="border px-4 py-2">
+          {{ p.avg_score|floatformat:2 }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
