@@ -15,13 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'apps.authentication',
-    'apps.voting',
-    'apps.sessions',
-    'apps.visualization',
-    'apps.admincontrols',
-    
-    'apps.core',
+    'core', 
 ]
 
 
