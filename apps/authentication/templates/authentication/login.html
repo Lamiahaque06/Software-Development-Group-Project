@@ -1,40 +1,115 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Login – {{ role_label }}{% endblock %}
+
+{% block body_class %}
+  min-h-screen w-full bg-white flex items-center justify-center relative
+{% endblock %}
+
+{% block main_class %}
+  w-full max-w-md mx-auto p-6 relative
+{% endblock %}
+
 {% block content %}
-  <div class="max-w-md mx-auto py-12">
-    <h2 class="text-2xl font-semibold mb-6">
-      Login as {{ role_label }}
-    </h2>
-    <form method="post" class="space-y-4">
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      {% for field in form %}
-        <div>
-          {{ field.label_tag }}
-          {{ field }}
-          <div class="text-red-600 text-sm">
-            {{ field.errors|join:", " }}
-          </div>
+  <!-- top-right Sign-up button -->
+  <a
+  href="{% url 'authentication:signup' role=role %}"
+  class="
+    absolute top-2 right-2
+    px-4 py-2 bg-orange-600 hover:bg-orange-700
+    text-white font-semibold rounded-lg transition
+  "
+>
+  Sign-up
+</a>
+
+  <!-- big heading -->
+  <h1 class="text-center text-5xl font-bold text-indigo-300 mb-8">
+    WELCOME BACK
+  </h1>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <!-- Email/Username field -->
+    <div>
+      <input
+        name="{{ form.username.html_name }}"
+        id="{{ form.username.id_for_label }}"
+        type="{{ form.username.field.widget.input_type }}"
+        placeholder="Email/Username"
+        value="{{ form.username.value|default_if_none:'' }}"
+        class="
+          w-full bg-pink-50 border border-pink-200
+          px-4 py-3 rounded-lg
+          focus:outline-none focus:ring-2 focus:ring-pink-300
+        "
+      />
+      {% if form.username.errors %}
+        <div class="text-red-600 text-sm mt-1">
+          {{ form.username.errors|join:", " }}
         </div>
-      {% endfor %}
-      <div class="text-right">
-        <button
-          type="submit"
-          class="px-6 py-2 bg-blue-600 text-white rounded
-                 hover:bg-blue-700 transition"
-        >
-          Login
-        </button>
-      </div>
-    </form>
-    <p class="mt-4 text-sm">
-      Don't have an account?
-      <a
-        href="{% url 'authentication:signup' role=role %}"
-        class="text-blue-600 hover:underline"
-      >
-        Sign up here
-      </a>.
-    </p>
-  </div>
+      {% endif %}
+    </div>
+
+    <!-- Password field -->
+    <div>
+      <input
+        name="{{ form.password.html_name }}"
+        id="{{ form.password.id_for_label }}"
+        type="{{ form.password.field.widget.input_type }}"
+        placeholder="Password"
+        class="
+          w-full bg-pink-50 border border-pink-200
+          px-4 py-3 rounded-lg
+          focus:outline-none focus:ring-2 focus:ring-pink-300
+        "
+      />
+      {% if form.password.errors %}
+        <div class="text-red-600 text-sm mt-1">
+          {{ form.password.errors|join:", " }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Remember me -->
+    <div class="flex items-center">
+      <input
+        id="remember"
+        type="checkbox"
+        name="remember"
+        class="h-4 w-4 text-pink-500 border-pink-200 focus:ring-pink-300"
+      />
+      <label for="remember" class="ml-2 text-pink-500">
+        Remember me
+      </label>
+    </div>
+
+    <!-- Submit button -->
+    <button
+      type="submit"
+      class="
+        w-full mt-4 py-3 bg-orange-500 hover:bg-orange-600
+        text-white text-lg font-semibold rounded-lg transition
+      "
+    >
+      Login as <span class="font-bold">{{ role_label }}</span>
+    </button>
+  </form>
+
+  <!-- Footer links -->
+  <p class="mt-6 text-center text-pink-500">
+    Not a member?
+    <a
+      href="{% url 'authentication:signup' role=role %}"
+      class="font-semibold hover:underline"
+    >
+      Sign up
+    </a>
+  </p>
+  <p class="text-center text-pink-500">
+    Forgot password?
+  </p>
 {% endblock %}

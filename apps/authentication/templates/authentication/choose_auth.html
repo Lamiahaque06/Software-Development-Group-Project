@@ -1,25 +1,54 @@
 {% extends "base.html" %}
-{% block title %}{{ role_label }} – Start{% endblock %}
+{% load static %}
+
+{% block title %}{{ role_label }} – Authenticate{% endblock %}
+
+{# make the full screen pastel‐pink background and center everything #}
+{% block body_class %}
+  h-screen w-full bg-pink-100 flex items-center justify-center relative
+{% endblock %}
+
+{# main container fills screen, centers its children, with some padding #}
+{% block main_class %}
+  w-full max-w-md mx-auto p-6 text-center space-y-12
+{% endblock %}
+
 {% block content %}
-  <div class="max-w-sm mx-auto py-12 text-center">
-    <h2 class="text-2xl font-semibold mb-6">
-      {{ role_label }}
-    </h2>
-    <div class="space-x-4">
-      <a
-        href="{% url 'authentication:login' role=role %}"
-        class="px-6 py-3 bg-green-500 text-white rounded
-               hover:bg-green-600 transition"
-      >
-        Login
-      </a>
-      <a
-        href="{% url 'authentication:signup' role=role %}"
-        class="px-6 py-3 bg-blue-500 text-white rounded
-               hover:bg-blue-600 transition"
-      >
-        Sign Up
-      </a>
-    </div>
+  <h2 class="text-4xl font-extrabold text-purple-500">
+    Are you already a member?
+  </h2>
+
+  <div class="flex items-center justify-between space-x-4">
+    <a
+      href="{% url 'authentication:login' role=role %}"
+      class="
+        flex-1 py-4 bg-pink-500 text-white text-lg font-semibold
+        rounded-lg shadow hover:bg-pink-600 transition
+      "
+    >
+      Login
+    </a>
+
+    <span class="text-lg font-bold text-purple-500">OR</span>
+
+    <a
+      href="{% url 'authentication:signup' role=role %}"
+      class="
+        flex-1 py-4 bg-pink-500 text-white text-lg font-semibold
+        rounded-lg shadow hover:bg-pink-600 transition
+      "
+    >
+      Sign-Up
+    </a>
   </div>
+
+  <a
+    href="{% url 'authentication:welcome' %}"
+    class="
+      absolute bottom-6 left-6 px-4 py-2 bg-purple-400 text-white
+      rounded-md shadow hover:bg-purple-500 transition
+    "
+  >
+    Back
+  </a>
 {% endblock %}

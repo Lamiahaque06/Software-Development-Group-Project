@@ -1,21 +1,57 @@
 {% extends "base.html" %}
-{% block title %}Welcome{% endblock %}
+{% load static %}
+
+{% block title %}Welcome to Sky Survey{% endblock %}
+
+{% block body_class %}
+  h-screen w-full 
+  bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600
+  flex items-center justify-center
+{% endblock %}
+
+{% block main_class %}
+  w-full h-full flex items-center justify-center p-0
+{% endblock %}
+
 {% block content %}
-  <div class="max-w-md mx-auto py-12 text-center">
-    <h1 class="text-3xl font-bold mb-8">
-      Welcome to Sky Health Care Survey
+  <div class="text-center space-y-8 px-4">
+    <h1 class="text-white text-5xl font-extrabold">
+      Welcome to
     </h1>
-    <div class="grid grid-cols-2 gap-4">
-      {% for slug,label in roles %}
-        <a
-          href="{% url 'authentication:choose_auth' role=slug %}"
-          class="block px-6 py-3 bg-indigo-600 text-white rounded
-                 hover:bg-indigo-700 transition"
-        >
-          {{ label }}
-        </a>
-      {% endfor %}
+    <img
+      src="{% static 'images/sky-logo.png' %}"
+      alt="Sky"
+      class="mx-auto w-56 md:w-72"
+    />
+    <h2 class="text-white text-3xl font-semibold">
+      Health Check Survey
+    </h2>
+    <p class="text-white text-xl">Select your position</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-2xl mx-auto">
+      <a
+        href="{% url 'authentication:choose_auth' role='engineer' %}"
+        class="block py-3 bg-pink-400 text-white font-medium rounded-lg
+               hover:bg-pink-500 transition text-center"
+      >Engineer</a>
+
+      <a
+        href="{% url 'authentication:choose_auth' role='team-leader' %}"
+        class="block py-3 bg-pink-400 text-white font-medium rounded-lg
+               hover:bg-pink-500 transition text-center"
+      >Team Leader</a>
+
+      <a
+        href="{% url 'authentication:choose_auth' role='department-leader' %}"
+        class="block py-3 bg-pink-400 text-white font-medium rounded-lg
+               hover:bg-pink-500 transition text-center"
+      >Department Leader</a>
+
+      <a
+        href="{% url 'authentication:choose_auth' role='senior-manager' %}"
+        class="block py-3 bg-pink-400 text-white font-medium rounded-lg
+               hover:bg-pink-500 transition text-center"
+      >Senior Manager</a>
     </div>
   </div>
 {% endblock %}
-

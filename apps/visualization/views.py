@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Count, Avg, Case, When, FloatField
 from django.db.models.functions import ExtractQuarter
 from apps.core.models import (
-    Session, Vote, Team, Department
+    Session, Vote, Team, Department,User
 )
 
 def _require_session(request):
@@ -108,4 +108,31 @@ def card_progress(request):
     return render(request, 'visualization/card_progress.html', {
         'progress': qs,
         'team': Team.objects.get(pk=team_id)
+    })
+
+
+def profile(request):
+    ok, resp = _require_session(request)
+    if not ok:
+        return resp
+    session_id = resp
+    user_id    = request.session.get('user_id')
+
+    # fetch session + team
+    session_obj = Session.objects.select_related('team').get(
+        pk=session_id
+    )
+    # fetch this user’s votes (you may not need these for the form)
+    votes = Vote.objects.filter(
+        session_id=session_id,
+        user_id=user_id
+    ).select_related('card')
+
+    # fetch the User record so we can prefill the form
+    user_obj = User.objects.get(pk=user_id)
+
+    return render(request, 'visualization/profile.html', {
+        'session': session_obj,
+        'votes':   votes,
+        'user':    user_obj,
     })

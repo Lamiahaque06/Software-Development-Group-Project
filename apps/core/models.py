@@ -32,6 +32,8 @@ class Team(models.Model):
 class HealthCheckCard(models.Model):
     card_id = models.AutoField(primary_key=True)
     title   = models.CharField(max_length=200)
+    eval_prompt = models.TextField()
+    traj_prompt = models.TextField()
 
     class Meta:
         db_table = 'HealthCheckCard'
@@ -69,7 +71,7 @@ class User(models.Model):
     ROLE_CHOICES  = [('Engineer','Engineer'),('Team Leader','Team Leader')]
     role          = models.CharField(max_length=20, choices=ROLE_CHOICES)
     team          = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL)
-    is_team_leader= models.BooleanField()
+    is_team_leader= models.BooleanField(default=False)
 
     class Meta:
         db_table = 'User'

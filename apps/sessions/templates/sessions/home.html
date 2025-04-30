@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Choose Session{% endblock %}
+{% block content %}
+  <div class="max-w-md mx-auto py-12 space-y-6">
+    <h2 class="text-2xl font-semibold text-center">
+      Welcome Back
+    </h2>
+
+    {% if last_session %}
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div class="flex justify-around">
+          <button
+            type="submit" name="action" value="continue"
+            class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+          >
+            Continue Last Session
+            (#{{ last_session.session_id }})
+          </button>
+          <button
+            type="submit" name="action" value="new"
+            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            Start New Session
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <!-- No prior sessions: just start your first one -->
+      <form method="post">
+        {% csrf_token %}
+        <button
+          type="submit" name="action" value="new"
+          class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Start First Session
+        </button>
+      </form>
+    {% endif %}
+
+    {% if sessions %}
+      <hr class="my-6">
+      <h3 class="text-lg font-semibold">Past Sessions</h3>
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="select">
+        <select
+          name="session_id"
+          class="w-full border p-2 rounded"
+        >
+          {% for sess in sessions %}
+            <option value="{{ sess.session_id }}">
+              #{{ sess.session_id }} — {{ sess.date }}
+              ({{ sess.session }})
+            </option>
+          {% endfor %}
+        </select>
+        <button
+          type="submit"
+          class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          View Session Summary
+        </button>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

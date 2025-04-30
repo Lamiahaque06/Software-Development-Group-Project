@@ -1,69 +1,39 @@
-# apps/voting/views.py
 from django.shortcuts import render, redirect
-from django.db import connection
+from apps.core.models import HealthCheckCard, Vote
 
 def vote_session(request, session_id):
-    """Render all cards and handle vote submission for a session."""
-    # Fetch cards and prompts
-    with connection.cursor() as cursor:
-        cursor.execute(
-            '''
-            SELECT card_id, title, eval_prompt, traj_prompt
-            FROM "HealthCheckCard"
-            ORDER BY card_id
-            '''
-        )
-        cards = [
-            {
-                'id': row[0],
-                'title': row[1],
-                'eval_prompt': row[2],
-                'traj_prompt': row[3],
-            }
-            for row in cursor.fetchall()
-        ]
+    cards = HealthCheckCard.objects.order_by('card_id')
+    EVAL_CHOICES = [
+        ('Green',    'Excellent',   'green'),
+        ('Amber',    'Average',     'yellow'),
+        ('Red',      'Bad',         'red'),
+    ]
+    PROG_CHOICES = [
+        ('Improving',    '↑',     'green'),
+        ('Stable',       '→',     'yellow'),
+        ('Deteriorating','↓',     'red'),
+    ]
 
     if request.method == 'POST':
         user_id = request.session.get('user_id', 1)
-        with connection.cursor() as cursor:
-            for card in cards:
-                vote_val = request.POST.get(f'vote_{card["id"]}')
-                prog     = request.POST.get(
-                              f'progress_{card["id"]}'
-                           )
-                feedback_eval = request.POST.get(
-                    f'feedback_eval_{card["id"]}', ''
+        for card in cards:
+            vote_val = request.POST.get(f'vote_{card.card_id}')
+            prog     = request.POST.get(f'progress_{card.card_id}')
+            if vote_val and prog:
+                Vote.objects.update_or_create(
+                    user_id=user_id,
+                    session_id=session_id,
+                    card_id=card.card_id,
+                    defaults={
+                        'vote_value': vote_val,
+                        'progress_status': prog
+                    }
                 )
-                feedback_traj = request.POST.get(
-                    f'feedback_traj_{card["id"]}', ''
-                )
-                # Remove existing vote
-                cursor.execute(
-                    '''
-                    DELETE FROM "Vote"
-                    WHERE "user_id" = ? AND "session_id" = ?
-                      AND "card_id" = ?
-                    ''',
-                    [user_id, session_id, card['id']]
-                )
-                # Insert new vote
-                cursor.execute(
-                    '''
-                    INSERT INTO "Vote"
-                      ("user_id","session_id","card_id",
-                       "vote_value","progress_status")
-                    VALUES (?, ?, ?, ?, ?)
-                    ''',
-                    [user_id, session_id,
-                     card['id'], vote_val, prog]
-                )
-        return redirect(
-            'voting:session_vote',
-            session_id=session_id
-        )
+        return redirect('voting:session_vote', session_id=session_id)
 
-    return render(
-        request,
-        'voting/vote_session.html',
-        {'session_id': session_id, 'cards': cards}
-    )
+    return render(request, 'voting/vote_session.html', {
+        'session_id':  session_id,
+        'cards':       cards,
+        'eval_choices':EVAL_CHOICES,
+        'prog_choices':PROG_CHOICES,
+    })

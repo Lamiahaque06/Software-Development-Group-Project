@@ -49,12 +49,14 @@ def signup_view(request, role):
             elif User.objects.filter(email=cd['email']).exists():
                 form.add_error('email', 'Email already registered')
             else:
+                is_leader = True if role_label == 'Team Leader' else False
                 user = User.objects.create(
                     name=cd['name'],
                     username=cd['username'],
                     email=cd['email'],
                     password=make_password(cd['password1']),
-                    role=role_label
+                    role=role_label,
+                    is_team_leader=is_leader,
                 )
                 request.session['user_id'] = user.user_id
                 request.session['role'] = role_label
