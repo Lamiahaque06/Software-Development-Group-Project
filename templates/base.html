@@ -3,27 +3,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}Health Check{% endblock %}</title>
-  <!-- <link rel="stylesheet" href="{% static 'css/sessions.css' %}"> -->
-  {# Add global css/js here: #}
-  <!-- <link rel="stylesheet" href="{% static 'css/global.css' %}"> -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Sky Health Care Survey{% endblock %}</title>
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- <script src="{% static 'js/global.js' %}" defer></script> -->
 </head>
-<body>
-  <header>
-    <!-- your nav bar -->
-  </header>
+<body class="min-h-screen flex bg-gray-50">
 
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+  {% comment %}
+    If there's a session in the user’s Django session store, show the sidebar.
+    Otherwise skip it and center the content.
+  {% endcomment %}
+  {% if request.session.session_id %}
+    <aside class="w-64 bg-white shadow-md">
+      <div class="p-6 text-xl font-bold border-b">Sky Survey</div>
+      <nav class="p-4 space-y-2">
+        <a href="{% url 'visualization:profile' %}"
+           class="block px-4 py-2 rounded hover:bg-gray-100">
+          Profile
+        </a>
+        <a href="{% url 'visualization:team_summary' %}"
+           class="block px-4 py-2 rounded hover:bg-gray-100">
+          Team Summary
+        </a>
+        <a href="{% url 'visualization:department_summary' %}"
+           class="block px-4 py-2 rounded hover:bg-gray-100">
+          Department Summary
+        </a>
+        <a href="{% url 'visualization:card_progress' %}"
+           class="block px-4 py-2 rounded hover:bg-gray-100">
+          Card Progress
+        </a>
+        <a href="{% url 'authentication:logout' %}"
+           class="block px-4 py-2 mt-4 text-red-600 hover:bg-red-50 rounded">
+          Logout
+        </a>
+      </nav>
+    </aside>
+    <div class="flex-1 flex flex-col">
+  {% endif %}
 
-  <footer>
-    <!-- your footer -->
-  </footer>
+    {% if messages %}
+      <div class="p-4 space-y-2 max-w-md mx-auto">
+        {% for msg in messages %}
+          <div class="p-3 rounded bg-green-100 text-green-800">
+            {{ msg }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
 
-  {# any bottom-of-page scripts: #}
-  <!-- <script src="{% static 'js/sessions.js' %}"></script> -->
+    <main
+      class="
+        p-6
+        {% if request.session.session_id %}
+          flex-1 overflow-auto
+        {% else %}
+          max-w-lg mx-auto
+        {% endif %}
+      "
+    >
+      {% block content %}{% endblock %}
+    </main>
+
+  {% if request.session.session_id %}
+    </div>
+  {% endif %}
+
 </body>
 </html>
