@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Department Leader Login</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: black; 
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: black;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      padding: 4rem;  
+      width: 600px;  
+      text-align: center;
+    }
+
+    .card_h1 {
+      font-size: 3rem;  
+      color: #5ea2e7; 
+      margin-bottom: 2rem;  
+      font-weight: 600;
+    }
+
+    .card p {
+      color: #5ea2e7; 
+      font-size: 36px;  
+    }
+
+    .card_input {
+      width: 90%;
+      padding: 1rem;  
+      margin: 1rem auto;  
+      display: block;
+      border: 1px solid #003366;
+      border-radius: 4px;
+      background: transparent;
+      font-size: 1.2rem;  
+      color: #000;
+      outline: none;
+    }
+
+    .card_input::placeholder {
+      color: #5ea2e7;
+    }
+
+    .card_input:focus {
+      box-shadow: none;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;  
+      color: #FF8C77;
+      font-size: 1rem;  
+      margin-bottom: 2rem;  
+    }
+
+    .remember_clicked {
+      accent-color: #FF8C77;
+    }
+
+    .login {
+      padding: 1rem;  
+      font-size: 1.5rem;  
+      font-weight: 600;
+      background: #003366;
+      color: #5ea2e7;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 1.5rem;  
+      transition: background 0.2s;
+    }
+
+    .login:hover {
+      background: #ffffff;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;  
+      margin-top: 2rem;  
+      flex-wrap: nowrap;
+    }
+
+    .button-group .login {
+      flex: 1 1 auto;
+      width: auto;
+      padding: 1rem 2rem;  
+    }
+
+    .top-gif {
+      display: block;
+      margin: 30px auto;  
+      max-width: 300px;  
+    }
+    .admin-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #5ea2e7;
+        background-color: #003366;
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.3s;
+        z-index: 1000;
+    }
+
+    .admin-button:hover {
+        background-color: #ffffff;
+        color: #003366;
+    }
+  </style>
+</head>
+<body>
+    <a href="{% url 'admin:login' %}" class="admin-button">Admin</a>
+    <div class="card">
+      <img src="{% static 'images/sky.gif' %}" class="top-gif"> 
+        <h1 class="card_h1">Welcome</h1>
+        <p>Please select your user</p>
+
+        <div class="button-group">
+            <a href="{% url 'engineers' %}" class="login">Engineers</a>
+            <a href="{% url 'team_leaders' %}" class="login">Team Leaders</a>
+            <a href="{% url 'department_leaders' %}" class="login">Department Leaders</a>
+            <a href="{% url 'senior_managers' %}" class="login">Senior Managers</a>
+          </div>          
+    </div>
+</body>
+</html>

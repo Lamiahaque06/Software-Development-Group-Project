@@ -1,4 +1,5 @@
 # apps/authentication/forms.py
+<<<<<<< HEAD
 from django import forms
 from apps.core.models import User
 
@@ -61,3 +62,34 @@ class SignupForm(forms.Form):
         if p1 and p2 and p1 != p2:
             self.add_error('password2', 'Passwords must match')
         return cleaned
+=======
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from apps.sessions.models import CustomUser  # so its still importing from sessions
+
+class RoleBasedSignUpForm(UserCreationForm):
+    role_value = None  
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = self.role_value
+        if commit:
+            user.save()
+        return user
+
+class EngineerSignUpForm(RoleBasedSignUpForm):
+    role_value = 'engineer'
+
+class TeamLeaderSignUpForm(RoleBasedSignUpForm):
+    role_value = 'team_lead'
+
+class DepartmentLeaderSignUpForm(RoleBasedSignUpForm):
+    role_value = 'dept_lead'
+
+class SeniorManagerSignUpForm(RoleBasedSignUpForm):
+    role_value = 'senior_manager'
+>>>>>>> ibtisam

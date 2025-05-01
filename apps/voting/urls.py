@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # apps/voting/urls.py
 from django.urls import path
 from . import views
@@ -10,4 +11,11 @@ urlpatterns = [
         views.vote_session,
         name='session_vote'
     ),
+=======
+from django.urls import path
+
+urlpatterns = [
+   
+    path('', lambda request: HttpResponse("Voting app root")),
+>>>>>>> ibtisam
 ]

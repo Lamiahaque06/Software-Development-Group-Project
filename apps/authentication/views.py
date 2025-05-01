@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # apps/authentication/views.py
 from django.shortcuts import render, redirect
 from django.http import Http404
@@ -105,3 +106,18 @@ def login_view(request, role):
 def logout_view(request):
     request.session.flush()
     return redirect('authentication:welcome')
+=======
+from django.shortcuts import render
+
+def engineers_view(request):
+    return render(request, 'engineers.html')
+
+def team_leaders_view(request):
+    return render(request, 'team_leaders.html')
+
+def department_leaders_view(request):
+    return render(request, 'department_leaders.html')
+
+def senior_managers_view(request):
+    return render(request, 'senior_managers.html')
+>>>>>>> ibtisam

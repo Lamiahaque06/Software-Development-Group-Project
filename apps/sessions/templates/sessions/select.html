@@ -4,6 +4,7 @@
 {% block content %}
 <div class="max-w-md mx-auto py-12 space-y-6">
 
+<<<<<<< HEAD
   <!-- Header -->
   <div class="bg-purple-100 border-b border-purple-300 px-4 py-3">
     <h1 class="text-xl font-semibold text-purple-600">
@@ -47,6 +48,23 @@
   <!-- STEP 2: Session selector & actions -->
   <form method="post" class="space-y-4">
     {% csrf_token %}
+=======
+  <div class="bg-lavender-100 p-4 border-b border-gray-200">
+    <h1 class="text-2xl font-medium text-purple-600">Team Select</h1>
+  </div>
+
+  <div class="p-6 flex-1">
+    <p class="text-xl text-purple-500 mb-8">
+      Please select your team. A session will be created for you automatically.
+    </p>
+
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+      <div>
+        {{ form.team }}
+        {{ form.team.errors }}
+      </div>
+>>>>>>> ibtisam
 
     <select
       name="session"
