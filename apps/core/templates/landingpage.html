@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -131,18 +132,18 @@
   </style>
 </head>
 <body>
-    <a href="/admin/" class="admin-button">Admin</a>
+    <a href="{% url 'admin:login' %}" class="admin-button">Admin</a>
     <div class="card">
-        <img src="sky.gif" class="top-gif">
+      <img src="{% static 'images/sky.gif' %}" class="top-gif"> 
         <h1 class="card_h1">Welcome</h1>
         <p>Please select your user</p>
 
         <div class="button-group">
-        <button class="login">Engineers</button>
-        <button class="login">Team Leaders</button>
-        <button class="login">Department Leaders</button>
-        <button class="login">Senior Managers</button>
-        </div>
+            <a href="{% url 'engineers' %}" class="login">Engineers</a>
+            <a href="{% url 'team_leaders' %}" class="login">Team Leaders</a>
+            <a href="{% url 'department_leaders' %}" class="login">Department Leaders</a>
+            <a href="{% url 'senior_managers' %}" class="login">Senior Managers</a>
+          </div>          
     </div>
 </body>
 </html>
